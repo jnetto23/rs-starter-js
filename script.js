@@ -27,6 +27,13 @@ logo.addEventListener('click', () => {
 
 // Function principal (COM PROMISSE);
 function queryWithPromisse () {
+    if(document.getElementById('user-git')) document.getElementById('user-git').remove();
+    let x = document.createElement('div');
+    let xTxt = document.createTextNode('Carregando...');
+    x.appendChild(xTxt);
+    x.setAttribute('id', 'loading');
+    content.appendChild(x);
+
     let user = form.querySelector('input[name=user]').value.trim().toLowerCase();
     getUserWithPromises(user)
         .then( resolve => {
@@ -96,6 +103,7 @@ function elipseDesc() {
 
 // Funcion para exibir dados do user
 function exibirUser(user) {
+    if(document.getElementById('loading')) document.getElementById('loading').remove();
     if(document.getElementById('user-git')) document.getElementById('user-git').remove();
     
     // Verifica se existe usuário
