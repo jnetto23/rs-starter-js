@@ -1,0 +1,281 @@
+/* Reset */
+* {
+    padding: 0;
+    margin: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+a {text-decoration: none;}
+a:visited {color: rgb(0, 0, 238);}
+a:hover {text-decoration: underline;}
+html {
+    height: 100%;
+    min-height: 100%;
+}
+body#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+}
+body#app footer {
+    margin-top: auto;
+}
+
+.d-none {display: none !important;}
+
+#app header {
+    width: 100%;
+    height: calc(100vh - 70px);
+    padding-top: 150px;
+}
+#app header,
+#app footer {
+    display: flex;
+    flex-direction: column;
+    background: url(https://github.com/images/modules/site/heroes/simple-codelines.svg),#2b3137;
+    background-position: center 10%;
+    background-size: cover;
+}
+#app main {
+    width: 100%;
+    padding: 10px 50px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#app footer {
+    height: 70px;
+    line-height: 70px;
+    color: #fff;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    bottom: 0;
+    margin-top: auto;   
+}
+#app footer a {
+    margin: 0 10px;
+    color: #fff;
+}
+#app #logo {
+    cursor: pointer;
+}
+#app header div.logo {
+    text-align: center;
+}
+#app header div.logo svg {
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 1px;
+}
+#app header div.search form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#app header div.search input {
+    height: 44px;
+    border-radius: 31px;
+    padding: 18px 15px;
+    font-size: 20px;
+    line-height: 44px;
+    text-align: center;
+    margin: 20px auto;
+}
+#app header div.search input::placeholder {
+    font-size: 14px;
+    font-style: italic;
+    color:rgb(145, 143, 143);
+}
+#app header div.search button {
+    background-color: #2ebc4f;
+    border: 1px dashed;
+    border-color: #2ebc4f;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+/* com pesquisa realizado */
+#app header.top {
+    height: 70px !important;
+    padding: 10px 50px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#app header.top svg {
+    width: 50px;
+    height: 50px;
+}
+#app header.top .search form {
+    flex-direction: row;
+}
+#app header.top .search form input {
+    margin: 0 20px;
+}
+
+main #user-git {
+    display: flex;
+    margin-bottom: 20px;
+}
+main #user-git.alert-error {
+    display: block;
+    text-align: center;
+    background: #ffa3a3;
+    padding: 10px 20px;
+    color: #c00404;
+}
+main #user-git #user-info {
+    max-width: 220px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+}
+main #user-git #repos-info {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0 10px;
+}
+main #user-git img {
+    width: 200px;
+    height: 200px;
+    padding: 5px;
+    border: 1px dashed rgb(145, 143, 143);
+    margin-bottom: 10px;
+    align-self: center;
+}
+main #user-git span,
+main #user-git p,
+main #user-git a {
+    display: block;
+    padding: 2px;
+    text-align: justify;
+    font-size: small;
+}
+main #user-git .name {
+    font-size: 24px;
+    font-weight: bold;
+}
+main #user-git .login {
+    color: rgb(145, 143, 143);
+    font-size: 20px;
+    margin-top: -10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed rgb(145, 143, 143);
+}
+main #user-git .bio {
+    padding-top: 10px; 
+}
+main #user-git .projects{
+    margin-top: 20px;
+    border-top: 1px dashed #918f8f;
+    text-align: center;
+}
+main #user-git .projects-title {
+    text-align: center;
+    position: relative;
+    top: -14px;
+    background: #fff;
+    display: inline-block;
+    align-self: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+main #user-git #repos-info .filter {
+    width: 100%;
+}
+main #user-git #repos-info .filter select {
+    margin: 8px;
+    font-size: 16px;
+    padding: 2px;
+}
+main #user-git #repos-info .repo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    min-width: 300px;
+    border: 1px dashed rgb(145, 143, 143);
+    padding: 10px;
+    margin: 8px;
+
+}
+main #user-git #repos-info .repo .repo-name {
+    font-size: 15px;
+}
+main #user-git #repos-info .repo .repo-desc {
+    font-style: italic;
+    color:rgb(145, 143, 143);
+    overflow: hidden;
+    line-height: 15px;
+    height: 62px;
+    font-size: 14px;
+}
+main #user-git #repos-info .repo .footer {
+    display: flex;
+}
+main #user-git #repos-info .repo .footer .repo-language {
+    font-weight: 600;
+    color: #726c6c;
+}
+
+
+@media only screen and (max-width: 580px) {
+    #app header.top {
+        height: auto !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        flex-direction: column;
+        padding: 10px;
+    }
+    #app header.top .search form {
+        flex-direction: column;
+        justify-content: center;
+    }
+    #app header.top .search form input {
+        margin: 10px 0px;
+    }
+    #app main {
+        padding: 10px;
+    }
+    #app main #user-git {
+        flex-direction: column;
+        align-items: center;
+    }
+    main #user-git #user-info {
+        margin-bottom: 20px;
+        max-width: 310px;
+        justify-content: center;
+    }
+    main #user-git #repos-info {
+        justify-content: center;
+    }
+    main #user-git #repos-info .filter {
+        text-align: center;
+    }
+    main #user-git #repos-info .repo {
+        min-width: 100%;
+    }
+}
+@media only screen and (min-width: 1024px) {
+    main #user-git #repos-info .repo {
+        max-width: 330px;
+    }
+}
+@media only screen and (min-width: 1440px) {
+    main #user-git #repos-info .repo {
+        max-width: 360px;
+    }
+}
+@media only screen and (max-height: 580px) {
+    #app header {
+        padding-top: 50px; 
+    }
+}
