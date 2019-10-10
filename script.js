@@ -286,6 +286,9 @@ function filterReposLink(links) {
     Array.prototype.forEach.call(lks, lk => {
         lk.addEventListener('click', (e) => {
             e.preventDefault();
+            let s = document.querySelector('div.filter > select');
+            let o = document.querySelector(`div.filter > select > option[value=${lk.getAttribute('data-filter')}]`).index
+            s.selectedIndex = o;
             filterRepos(lk.getAttribute('data-filter'));
         });
     });
