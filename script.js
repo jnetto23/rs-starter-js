@@ -132,38 +132,46 @@ function exibirUser(user) {
     login.classList.add('login');
     div1.appendChild(login);
 
-    let bio = document.createElement('p');
-    let bioTxt = document.createTextNode(user.bio);
-    bio.appendChild(bioTxt);
-    bio.classList.add('bio');
-    div1.appendChild(bio);
-
-    let companyList = user.company.trimEnd().split(' ');
-    for(let i = 0; i < companyList.length; i++) {
-        let company = document.createElement('a');
-        let companyTxt = document.createTextNode(companyList[i]);
-        company.appendChild(companyTxt);
-        company.setAttribute('href', `https://github.com/${companyList[i].replace('@', '')}`);
-        company.setAttribute('target', '_blank');
-        company.classList.add('company');
-        div1.appendChild(company);
+    if(user.bio) {
+        let bio = document.createElement('p');
+        let bioTxt = document.createTextNode(user.bio);
+        bio.appendChild(bioTxt);
+        bio.classList.add('bio');
+        div1.appendChild(bio);
     }
 
-    let location = document.createElement('span');
-    let locationTxt = document.createTextNode(user.location);
-    location.appendChild(locationTxt);
-    location.classList.add('location');
-    div1.appendChild(location);
+    if(user.company) {
+        let companyList = user.company.trimEnd().split(' ');
+        for(let i = 0; i < companyList.length; i++) {
+            let company = document.createElement('a');
+            let companyTxt = document.createTextNode(companyList[i]);
+            company.appendChild(companyTxt);
+            company.setAttribute('href', `https://github.com/${companyList[i].replace('@', '')}`);
+            company.setAttribute('target', '_blank');
+            company.classList.add('company');
+            div1.appendChild(company);
+        }
+    }
 
-    let blogList = user.blog.trimEnd().split(' ');
-    for(let i = 0; i < blogList.length; i++) {
-        let blog = document.createElement('a');
-        let blogTxt = document.createTextNode(blogList[i]);
-        blog.appendChild(blogTxt);
-        blog.setAttribute('href', blogList[i]);
-        blog.setAttribute('target', '_blank');
-        blog.classList.add('blog');
-        div1.appendChild(blog);
+    if(user.location) {
+        let location = document.createElement('span');
+        let locationTxt = document.createTextNode(user.location);
+        location.appendChild(locationTxt);
+        location.classList.add('location');
+        div1.appendChild(location);
+    }
+
+    if(user.blog) {
+        let blogList = user.blog.trimEnd().split(' ');
+        for(let i = 0; i < blogList.length; i++) {
+            let blog = document.createElement('a');
+            let blogTxt = document.createTextNode(blogList[i]);
+            blog.appendChild(blogTxt);
+            blog.setAttribute('href', blogList[i]);
+            blog.setAttribute('target', '_blank');
+            blog.classList.add('blog');
+            div1.appendChild(blog);
+        }
     }
 
     content.appendChild(div);
