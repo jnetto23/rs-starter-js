@@ -17,20 +17,18 @@ form.addEventListener('submit', (e) => {
     header.classList.add('top');
     content.classList.remove('d-none');
 });
-
 logo.addEventListener('click', () => {
     if(document.getElementById('user-git')) document.getElementById('user-git').remove();
     if(header.classList.contains('top')) header.classList.remove('top');
     if(!content.classList.contains('d-none')) content.classList.add('d-none');
     clearInput();
 });
-
 // Function principal (COM PROMISSE);
 function queryWithPromisse () {
     if(document.getElementById('user-git')) document.getElementById('user-git').remove();
+
     let x = document.createElement('div');
-    let xTxt = document.createTextNode('Carregando...');
-    x.appendChild(xTxt);
+    x.appendChild(document.createTextNode('Carregando...'));
     x.setAttribute('id', 'loading');
     content.appendChild(x);
 
@@ -38,10 +36,17 @@ function queryWithPromisse () {
     getUserWithPromises(user)
         .then( resolve => {
             exibirUser(resolve);
-            getReposWithPromises(user)
-                .then(resolve => {
-                    exibirRepos(resolve);
-                });
+            
+            let totalRepos = resolve.public_repos;
+            let totalPages = Math.trunc(totalRepos / 30) + 1;
+            
+            for(let i = 1; i <= totalPages; i++) {
+                getReposWithPromises(user, i)
+                    .then(resolve => {
+                        exibirRepos(resolve);
+                    });
+            };
+
         })
         .catch( reject => {
             console.error(reject);
@@ -49,7 +54,6 @@ function queryWithPromisse () {
             clearInput();
         });
 };
-
 // Function para pegar o usuário (COM PROMISSES);
 function getUserWithPromises (user) {
     return new Promise( function (resolve, reject) {
@@ -68,12 +72,11 @@ function getUserWithPromises (user) {
         };
     });
 };
-
 // Function para pegar os repositorios (COM PROMISSES);
-function getReposWithPromises (user) {
+function getReposWithPromises (user, page) {
     return new Promise( function (resolve) {
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', `https://api.github.com/users/${user}/repos`);
+        xhr.open('GET', `https://api.github.com/users/${user}/repos?page=${page}&per_pege=30`);
         xhr.send(null);
 
         xhr.onreadystatechange = () => {
@@ -85,7 +88,6 @@ function getReposWithPromises (user) {
         };
     });
 };
-
 // Function Auxiliar
 function clearInput() {
     form.querySelector('input[name=user]').value = '';
@@ -100,7 +102,6 @@ function elipseDesc() {
         };
     });
 };
-
 // Funcion para exibir dados do user
 function exibirUser(user) {
     if(document.getElementById('loading')) document.getElementById('loading').remove();
@@ -109,8 +110,7 @@ function exibirUser(user) {
     // Verifica se existe usuário
     if(typeof user === 'string') {
         let error    = document.createElement('div');
-        let errorTxt = document.createTextNode(user);
-        error.appendChild(errorTxt);
+        error.appendChild(document.createTextNode(user));
         error.classList.add('alert-error');
         error.setAttribute('id', 'user-git');
         content.appendChild(error);
@@ -129,21 +129,18 @@ function exibirUser(user) {
     div1.appendChild(img);
     
     let name = document.createElement('span');
-    let nameTxt = document.createTextNode(user.name);
-    name.appendChild(nameTxt);
+    name.appendChild(document.createTextNode(user.name));
     name.classList.add('name');
     div1.appendChild(name);
 
     let login = document.createElement('span');
-    let loginTxt = document.createTextNode(user.login);
-    login.appendChild(loginTxt);
+    login.appendChild(document.createTextNode(user.login));
     login.classList.add('login');
     div1.appendChild(login);
 
     if(user.bio) {
         let bio = document.createElement('p');
-        let bioTxt = document.createTextNode(user.bio);
-        bio.appendChild(bioTxt);
+        bio.appendChild(document.createTextNode(user.bio));
         bio.classList.add('bio');
         div1.appendChild(bio);
     }
@@ -152,8 +149,7 @@ function exibirUser(user) {
         let companyList = user.company.trimEnd().split(' ');
         for(let i = 0; i < companyList.length; i++) {
             let company = document.createElement('a');
-            let companyTxt = document.createTextNode(companyList[i]);
-            company.appendChild(companyTxt);
+            company.appendChild(document.createTextNode(companyList[i]));
             company.setAttribute('href', `https://github.com/${companyList[i].replace('@', '')}`);
             company.setAttribute('target', '_blank');
             company.classList.add('company');
@@ -163,8 +159,7 @@ function exibirUser(user) {
 
     if(user.location) {
         let location = document.createElement('span');
-        let locationTxt = document.createTextNode(user.location);
-        location.appendChild(locationTxt);
+        location.appendChild(document.createTextNode(user.location));
         location.classList.add('location');
         div1.appendChild(location);
     }
@@ -173,8 +168,7 @@ function exibirUser(user) {
         let blogList = user.blog.trimEnd().split(' ');
         for(let i = 0; i < blogList.length; i++) {
             let blog = document.createElement('a');
-            let blogTxt = document.createTextNode(blogList[i]);
-            blog.appendChild(blogTxt);
+            blog.appendChild(document.createTextNode(blogList[i]));
             blog.setAttribute('href', blogList[i]);
             blog.setAttribute('target', '_blank');
             blog.classList.add('blog');
@@ -184,103 +178,120 @@ function exibirUser(user) {
 
     content.appendChild(div);
 };
-
 // Funcion para exibir dados dos repos
 function exibirRepos(repos) {
     if(repos.length <= 0) return;
-    let languages = {};
-    let div = document.createElement('div');
-    div.setAttribute('id', 'repos-info');
     
-    let filter = document.createElement('div');
-    filter.classList.add('filter');
-
-    let select = document.createElement('select');
-    let opt = document.createElement('option');
-    let optText = document.createTextNode('Todos');
-    opt.appendChild(optText);
-    opt.setAttribute('value', 'todos');
-    select.appendChild(opt);
-    filter.appendChild(select);
-    div.appendChild(filter);
-
+    let languages = {};
+    let listRepos;
+    
+    if(document.getElementById('repos-info')) {
+        listRepos = document.getElementById('repos-info');
+    } else {
+        listRepos = document.createElement('div');
+        listRepos.setAttribute('id', 'repos-info');
+    };   
 
     for(repo of repos) {
-        let el = document.createElement('div');
-        el.classList.add('repo');
-        el.setAttribute('data-language', repo.language || 'Undefined');
+        listRepos.appendChild(this.repoHTML(repo));
         
-        let name = document.createElement('a');
-        let nameTxt = document.createTextNode(repo.name);
-        name.appendChild(nameTxt);
-        name.setAttribute('href', repo.html_url);
-        name.setAttribute('target', '_blank');
-        name.classList.add('repo-name');
-        el.appendChild(name);
-
-        let desc = document.createElement('p');
-        let descTxt = document.createTextNode(repo.description || '');
-        desc.appendChild(descTxt);
-        desc.classList.add('repo-desc');
-        el.appendChild(desc);
-
-        let footer = document.createElement('div');
-        footer.classList.add('footer');
-
-        let language = document.createElement('span');
-        let languageTxt = document.createTextNode(repo.language || '');
-        language.appendChild(languageTxt);
-        language.classList.add('repo-language');
-        footer.appendChild(language);
-
-        el.appendChild(footer);
-        div.appendChild(el);
-        
-        // monta array de linguages;
+        // Monta array de linguages;
         let l = repo.language || 'Undefined'; 
-        if(languages.hasOwnProperty(l)) {
-            languages[l] += 1;
-        } else {
-            languages[l] = 1;
-        };    
+        (languages.hasOwnProperty(l)) ? languages[l] += 1 : languages[l] = 1;
+
     };
-    document.getElementById('user-git').appendChild(div);
+    
+    document.getElementById('user-git').appendChild(listRepos);
     elipseDesc();
 
-    // monta a relação de linguagens
-    let ldiv = document.createElement('div');
-    ldiv.classList.add('projects');
-    let title = document.createElement('span');
-    let titleTxt = document.createTextNode('Projetos');
-    title.appendChild(titleTxt);
-    title.classList.add('projects-title');
-    ldiv.appendChild(title);
-    let a = document.createElement('a');
-    let aTxt = document.createTextNode(`Todos [${repos.length}]`);
-    a.appendChild(aTxt);
-    a.setAttribute('href', '#');
-    a.setAttribute('data-filter', 'todos');
-    ldiv.appendChild(a);
+    if(document.querySelector('.projects')) document.querySelector('.projects').remove();
+    if(document.querySelector('.filter')) document.querySelector('.filter').remove();
 
-    for(l of Object.keys(languages).sort()) {
+    // Select
+    let divSelect = document.createElement('div');
+    divSelect.classList.add('filter');
+
+    document.getElementById('repos-info').insertBefore(divSelect, document.getElementById('repos-info').firstChild);
+
+    let select = document.createElement('select');
+    divSelect.appendChild(select);
+
+    let oT = document.createElement('option');
+    oT.setAttribute('value', 'todos');
+    oT.appendChild(document.createTextNode('Todos'));
+    select.appendChild(oT);
+
+    // Relação de linguages de Projetos
+    let projectsDiv = document.createElement('div');
+    projectsDiv.classList.add('projects');
+    let title = document.createElement('span');
+    title.classList.add('projects-title');
+    let titleTXT = document.createTextNode('Projetos');
+    title.appendChild(titleTXT);
+    projectsDiv.appendChild(title);
+
+    let R = document.querySelectorAll('.repo');
+    let T = R.length;
+    
+    let total = document.createElement('a');
+    total.setAttribute('href', '#');
+    total.setAttribute('data-filter', 'todos');
+    totalTxt = document.createTextNode(`Todos [${T}]`);
+    total.appendChild(totalTxt);
+    projectsDiv.appendChild(total);    
+    
+    let Langs = {};
+    R.forEach(r => {
+        (Langs[r.getAttribute('data-language')]) ? Langs[r.getAttribute('data-language')] += 1 : Langs[r.getAttribute('data-language')] = 1;
+    });
+
+    for(l of Object.keys(Langs).sort()) {
         let a = document.createElement('a');
-        let aTxt = document.createTextNode(`${l} [${languages[l]}]`);
-        a.appendChild(aTxt);
-        a.setAttribute('href', '#');
+        a.setAttribute('href', '#')
         a.setAttribute('data-filter', l);
-        ldiv.appendChild(a);
+        let aTxt = document.createTextNode(`${l} [${Langs[l]}]`);         
+        a.appendChild(aTxt);
+        projectsDiv.appendChild(a);
 
         let o = document.createElement('option');
-        let oText = document.createTextNode(l);
-        o.appendChild(oText);
         o.setAttribute('value', l);
+        o.appendChild(document.createTextNode(l));
         select.appendChild(o);
     };
-    document.getElementById('user-info').appendChild(ldiv);
-    filterReposLink(ldiv);
+
+
+    document.getElementById('user-info').appendChild(projectsDiv);
+    filterReposLink(projectsDiv);
     filterReposSelect(select);
 };
+function repoHTML(repo) {
+    let el = document.createElement('div');
+    el.classList.add('repo');
+    el.setAttribute('data-language', repo.language || 'Undefined');
+    
+    let name = document.createElement('a');
+    name.appendChild(document.createTextNode(repo.name));
+    name.setAttribute('href', repo.html_url);
+    name.setAttribute('target', '_blank');
+    name.classList.add('repo-name');
+    el.appendChild(name);
 
+    let desc = document.createElement('p');
+    desc.appendChild(document.createTextNode(repo.description || ''));
+    desc.classList.add('repo-desc');
+    el.appendChild(desc);
+
+    let footer = document.createElement('div');
+    footer.classList.add('footer');
+
+    let language = document.createElement('span');
+    language.appendChild(document.createTextNode(repo.language || ''));
+    language.classList.add('repo-language');
+    footer.appendChild(language);
+
+    el.appendChild(footer);
+    return el;
+};
 function filterReposLink(links) {
     let lks = links.querySelectorAll('a');
     Array.prototype.forEach.call(lks, lk => {
