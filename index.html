@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>GitHub Consulta</title>
+     <!-- SEO -->
+     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+     <meta name='viewport' content='width=device-width, initial-scale=1' />
+     <meta http-equiv='X-UA-Compatible' content='ie=edge' />
+     <base href='/' />
+     <title>GitHub Consulta</title>
+     <meta name='description' content='Consulte informações de um usuário do GitHub através de uma aplicação simples que utiliza Promises para consumir os dados da API do próprio GitHub.'/>
+     <meta name='keywords' content='fyyb, jnetto23, Git Consulta, javascript, promises, portfolio, case study, estudo'/>
+     <meta name='robots' content='index,follow' />
+     <meta name='rating' content='General' />
+     <meta name='copyright'content='Fyyb'>
+     <link rel='canonical' href='https://git-consulta.fyyb.com.br' />
+     <!-- Localização -->
+     <meta name='geo.placename' content='São Paulo-SP'>
+     <meta name='geo.region' content='SP-BR'>
+     <!-- Meta Tags Facebook (https://ogp.me/) -->
+     <meta property='og:url' content='https://git-consulta.fyyb.com.br'>
+     <meta property='og:site_name' content='GitHub Consulta'>
+     <meta property='og:title' content='GitHub Consulta'>
+     <meta property='og:description' content='Consulte informações de um usuário do GitHub através de uma aplicação simples que utiliza Promises para consumir os dados da API do próprio GitHub.'>
+     <meta property='og:type' content='website'>
+     <meta property='og:image' content='https://git-consulta.fyyb.com.br/screenshots/git_consulta-home.png'>
+     <meta property='og:region' content='Brasil'>
+     <meta property='fb:admins' content='605931989767491'>
+     <!-- Desenvolvido por Fyyb - fyyb.com.br -->
     <link rel="stylesheet" href="./style.css">
 </head>
 <body id="app">
@@ -14,14 +35,17 @@
         </div>
         <div class="search">
             <form id="form-search">
-                <input type="text" name="user" placeholder="pesquise por um usuário do github" autofocus>
+                <label for="name">Pesquise por um usuário do GitHub</label>
+                <input type="text" id="name" name="user" placeholder="Ex: jnetto23, diego3g, filipedeschamps" autofocus>
                 <button type="submit">Pesquisar</button>
             </form>
         </div>
     </header>
     <main class="d-none"></main>
     <footer>
-        Developed by: <a href="https://github.com/jnetto23" target="_blanck"><strong> Jnetto23</strong></a>
+        <section class="copyright">
+            &copy; Copyright<script>document.write(' ' + new Date().getFullYear() + ' ');</script>&#8212;<a href="http://fyyb.com.br" target="_blank" rel=”noopener noreferrer”>Fyyb</a>&hearts;
+          </section>  
     </footer>
 
     <script src="./script.js"></script>
