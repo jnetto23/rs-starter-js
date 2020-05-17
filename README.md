@@ -15,4 +15,4 @@
 The challenge of the project was to find the best way to render the information on screen without using javascript synchronous (async / await).  
 Solution: use PROMISES. 
 
-**[Final Project](https://jnetto23.github.io/rs-starter-js/index.html)**
+**[Final Project](https://fyyb.com.br/preview/git-consulta/)**
